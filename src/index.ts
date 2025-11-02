@@ -1,7 +1,9 @@
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
-import {chromium, Browser} from "playwright";
-import {EchoSchema, OpenWebPageSchema, ClickCoordinatesSchema, ScreenshotSchema} from "./schemas.js";
+import {Browser} from "playwright";
+import {openWebPageTool} from "./tools/open-web-page.js";
+import {clickCoordinatesTool} from "./tools/click-coordinates.js";
+import {screenshotTool} from "./tools/screenshot.js";
 
 const server = new McpServer({
     name: "scout",
@@ -11,122 +13,23 @@ const server = new McpServer({
 let browser: Browser | null = null;
 let currentPage: any = null;
 
-server.tool("echo", "Echo back the input", EchoSchema.shape, async ({ message }) => {
-    return {
-        content: [
-            {
-                type: "text",
-                text: `Echo: ${message}`,
-            },
-        ],
-    };
+const getContext = () => ({
+    browser,
+    currentPage,
+    setBrowser: (b: Browser) => { browser = b; },
+    setCurrentPage: (p: any) => { currentPage = p; },
 });
 
-server.tool("open-web-page", "Open a web page in a browser", OpenWebPageSchema.shape, async ({ url }) => {
-    try {
-        if (!browser) {
-            browser = await chromium.launch({
-                headless: false,
-            });
-        }
-
-        const context = await browser.newContext();
-        currentPage = await context.newPage();
-
-        await currentPage.goto(url);
-
-        const title = await currentPage.title();
-        const pageUrl = currentPage.url();
-
-        return {
-            content: [
-                {
-                    type: "text",
-                    text: `Successfully opened webpage:\nTitle: ${title}\nURL: ${pageUrl}`,
-                },
-            ],
-        };
-    } catch (error) {
-        return {
-            content: [
-                {
-                    type: "text",
-                    text: `Error opening webpage "${url}": ${error instanceof Error ? error.message : String(error)}`,
-                },
-            ],
-        };
-    }
+server.tool(openWebPageTool.name, openWebPageTool.description, openWebPageTool.schema, async (params: any) => {
+    return await openWebPageTool.handler(params, getContext());
 });
 
-server.tool("click-coordinates", "Click at specified coordinates on the current page", ClickCoordinatesSchema.shape, async ({ x, y }) => {
-    try {
-        if (!currentPage) {
-            return {
-                content: [
-                    {
-                        type: "text",
-                        text: "Error: No page is currently open. Please open a webpage first using the open-web-page tool.",
-                    },
-                ],
-            };
-        }
-
-        await currentPage.mouse.click(x, y);
-
-        return {
-            content: [
-                {
-                    type: "text",
-                    text: `Successfully clicked at coordinates (${x}, ${y})`,
-                },
-            ],
-        };
-    } catch (error) {
-        return {
-            content: [
-                {
-                    type: "text",
-                    text: `Error clicking at coordinates (${x}, ${y}): ${error instanceof Error ? error.message : String(error)}`,
-                },
-            ],
-        };
-    }
+server.tool(clickCoordinatesTool.name, clickCoordinatesTool.description, clickCoordinatesTool.schema, async (params: any) => {
+    return await clickCoordinatesTool.handler(params, getContext());
 });
 
-server.tool("screenshot", "Take a screenshot of the current page", ScreenshotSchema.shape, async () => {
-    try {
-        if (!currentPage) {
-            return {
-                content: [
-                    {
-                        type: "text",
-                        text: "Error: No page is currently open. Please open a webpage first using the open-web-page tool.",
-                    },
-                ],
-            };
-        }
-
-        const screenshot = await currentPage.screenshot();
-
-        return {
-            content: [
-                {
-                    type: "image",
-                    data: screenshot.toString("base64"),
-                    mimeType: "image/png",
-                },
-            ],
-        };
-    } catch (error) {
-        return {
-            content: [
-                {
-                    type: "text",
-                    text: `Error taking screenshot: ${error instanceof Error ? error.message : String(error)}`,
-                },
-            ],
-        };
-    }
+server.tool(screenshotTool.name, screenshotTool.description, screenshotTool.schema, async (params: any) => {
+    return await screenshotTool.handler(params, getContext());
 });
 
 (async () => {
