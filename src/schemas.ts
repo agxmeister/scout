@@ -12,3 +12,5 @@ export const ClickCoordinatesSchema = zod.object({
     x: zod.number().describe("X coordinate to click"),
     y: zod.number().describe("Y coordinate to click"),
 });
+
+export const ScreenshotSchema = zod.object({});

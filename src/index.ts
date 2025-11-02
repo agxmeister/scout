@@ -1,7 +1,7 @@
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {StdioServerTransport} from "@modelcontextprotocol/sdk/server/stdio.js";
 import {chromium, Browser} from "playwright";
-import {EchoSchema, OpenWebPageSchema, ClickCoordinatesSchema} from "./schemas.js";
+import {EchoSchema, OpenWebPageSchema, ClickCoordinatesSchema, ScreenshotSchema} from "./schemas.js";
 
 const server = new McpServer({
     name: "scout",
@@ -87,6 +87,42 @@ server.tool("click-coordinates", "Click at specified coordinates on the current 
                 {
                     type: "text",
                     text: `Error clicking at coordinates (${x}, ${y}): ${error instanceof Error ? error.message : String(error)}`,
+                },
+            ],
+        };
+    }
+});
+
+server.tool("screenshot", "Take a screenshot of the current page", ScreenshotSchema.shape, async () => {
+    try {
+        if (!currentPage) {
+            return {
+                content: [
+                    {
+                        type: "text",
+                        text: "Error: No page is currently open. Please open a webpage first using the open-web-page tool.",
+                    },
+                ],
+            };
+        }
+
+        const screenshot = await currentPage.screenshot();
+
+        return {
+            content: [
+                {
+                    type: "image",
+                    data: screenshot.toString("base64"),
+                    mimeType: "image/png",
+                },
+            ],
+        };
+    } catch (error) {
+        return {
+            content: [
+                {
+                    type: "text",
+                    text: `Error taking screenshot: ${error instanceof Error ? error.message : String(error)}`,
                 },
             ],
         };
