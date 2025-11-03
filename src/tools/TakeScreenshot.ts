@@ -1,11 +1,15 @@
+import {injectable} from "inversify";
 import {ScreenshotSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
+import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
 
-export const screenshotTool = {
-    name: "screenshot",
-    description: "Take a screenshot of the current page",
-    schema: ScreenshotSchema.shape,
-    handler: async (_params: {}, context: { currentPage: any }): Promise<CallToolResult> => {
+@injectable()
+export class TakeScreenshot implements ToolInterface {
+    readonly name = "screenshot";
+    readonly description = "Take a screenshot of the current page";
+    readonly schema = ScreenshotSchema.shape;
+
+    async handler(_params: {}, context: ContextInterface): Promise<CallToolResult> {
         try {
             if (!context.currentPage) {
                 return {
@@ -39,5 +43,5 @@ export const screenshotTool = {
                 ],
             };
         }
-    },
-};
+    }
+}

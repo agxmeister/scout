@@ -1,11 +1,15 @@
+import {injectable} from "inversify";
 import {ClickCoordinatesSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
+import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
 
-export const clickCoordinatesTool = {
-    name: "click-coordinates",
-    description: "Click at specified coordinates on the current page",
-    schema: ClickCoordinatesSchema.shape,
-    handler: async ({ x, y }: { x: number, y: number }, context: { currentPage: any }): Promise<CallToolResult> => {
+@injectable()
+export class Click implements ToolInterface {
+    readonly name = "click-coordinates";
+    readonly description = "Click at specified coordinates on the current page";
+    readonly schema = ClickCoordinatesSchema.shape;
+
+    async handler({ x, y }: { x: number, y: number }, context: ContextInterface): Promise<CallToolResult> {
         try {
             if (!context.currentPage) {
                 return {
@@ -38,5 +42,5 @@ export const clickCoordinatesTool = {
                 ],
             };
         }
-    },
-};
+    }
+}

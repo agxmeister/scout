@@ -1,12 +1,16 @@
-import {chromium, Browser} from "playwright";
+import {injectable} from "inversify";
+import {chromium} from "playwright";
 import {OpenWebPageSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
+import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
 
-export const openWebPageTool = {
-    name: "open-web-page",
-    description: "Open a web page in a browser",
-    schema: OpenWebPageSchema.shape,
-    handler: async ({ url }: { url: string }, context: { browser: Browser | null, setBrowser: (b: Browser) => void, setCurrentPage: (p: any) => void }): Promise<CallToolResult> => {
+@injectable()
+export class OpenPage implements ToolInterface {
+    readonly name = "open-web-page";
+    readonly description = "Open a web page in a browser";
+    readonly schema = OpenWebPageSchema.shape;
+
+    async handler({ url }: { url: string }, context: ContextInterface): Promise<CallToolResult> {
         try {
             if (!context.browser) {
                 const browser = await chromium.launch({
@@ -42,5 +46,5 @@ export const openWebPageTool = {
                 ],
             };
         }
-    },
-};
+    }
+}
