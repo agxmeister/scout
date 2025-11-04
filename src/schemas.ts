@@ -12,3 +12,8 @@ export const ClickCoordinatesSchema = zod.object({
 export const ScreenshotSchema = zod.object({});
 
 export const CloseBrowserSchema = zod.object({});
+
+export const GetLocatorSchema = zod.object({
+    x: zod.number().describe("X coordinate of the element"),
+    y: zod.number().describe("Y coordinate of the element"),
+});

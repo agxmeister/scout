@@ -8,6 +8,7 @@ import {TakeScreenshot} from "./tools/TakeScreenshot.js";
 import {OpenPage} from "./tools/OpenPage.js";
 import {Click} from "./tools/Click.js";
 import {CloseBrowser} from "./tools/CloseBrowser.js";
+import {GetLocator} from "./tools/GetLocator.js";
 
 const container = new Container();
 
@@ -17,6 +18,7 @@ container.bind<ToolInterface>(dependencies.Tool).to(TakeScreenshot);
 container.bind<ToolInterface>(dependencies.Tool).to(OpenPage);
 container.bind<ToolInterface>(dependencies.Tool).to(Click);
 container.bind<ToolInterface>(dependencies.Tool).to(CloseBrowser);
+container.bind<ToolInterface>(dependencies.Tool).to(GetLocator);
 
 container.bind<McpServerFactoryInterface>(dependencies.McpServerFactory).to(McpServerFactory);
 
