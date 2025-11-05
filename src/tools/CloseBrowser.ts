@@ -14,7 +14,7 @@ export class CloseBrowser implements ToolInterface {
             if (context.browser) {
                 await context.browser.close();
                 context.browser = null;
-                context.currentPage = null;
+                context.clearPages();
             }
             return {
                 content: [

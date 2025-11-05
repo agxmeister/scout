@@ -20,19 +20,21 @@ export class OpenPage implements ToolInterface {
             }
 
             const browserContext = await context.browser!.newContext();
-            const currentPage = await browserContext.newPage();
-            context.setCurrentPage(currentPage);
+            const page = await browserContext.newPage();
 
-            await currentPage.goto(url);
+            const pageName = `page-${Math.random().toString(36).substring(2, 9)}`;
+            context.addPage(pageName, page);
 
-            const title = await currentPage.title();
-            const pageUrl = currentPage.url();
+            await page.goto(url);
+
+            const title = await page.title();
+            const pageUrl = page.url();
 
             return {
                 content: [
                     {
                         type: "text",
-                        text: `Successfully opened webpage:\nTitle: ${title}\nURL: ${pageUrl}`,
+                        text: `Successfully opened webpage:\nPage Name: ${pageName}\nTitle: ${title}\nURL: ${pageUrl}`,
                     },
                 ],
             };
