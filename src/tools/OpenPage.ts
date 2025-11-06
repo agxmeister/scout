@@ -1,5 +1,6 @@
 import {injectable} from "inversify";
 import {chromium} from "playwright";
+import {uniqueNamesGenerator, adjectives, colors, animals} from "unique-names-generator";
 import {OpenWebPageSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
@@ -22,7 +23,12 @@ export class OpenPage implements ToolInterface {
             const browserContext = await context.browser!.newContext();
             const page = await browserContext.newPage();
 
-            const pageName = `page-${Math.random().toString(36).substring(2, 9)}`;
+            const pageName = uniqueNamesGenerator({
+                dictionaries: [adjectives, colors, animals],
+                separator: '-',
+                length: 3,
+                style: 'lowerCase'
+            });
             context.addPage(pageName, page);
 
             await page.goto(url);
