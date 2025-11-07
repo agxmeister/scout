@@ -2,21 +2,26 @@ import "reflect-metadata";
 import {Container} from "inversify";
 import {dependencies} from "./dependencies.js";
 import type {Tool as ToolInterface, Context as ContextInterface, McpServerFactory as McpServerFactoryInterface} from "./modules/mcp/types.js";
+import type {BrowserFactory as BrowserFactoryInterface} from "./modules/playwright/types.js";
 import {Context} from "./modules/mcp/Context.js";
 import {McpServerFactory} from "./modules/mcp/McpServerFactory.js";
+import {BrowserFactory} from "./modules/playwright/BrowserFactory.js";
 import {TakeScreenshot} from "./tools/TakeScreenshot.js";
 import {OpenPage} from "./tools/OpenPage.js";
 import {Click} from "./tools/Click.js";
+import {OpenBrowser} from "./tools/OpenBrowser.js";
 import {CloseBrowser} from "./tools/CloseBrowser.js";
 import {GetLocator} from "./tools/GetLocator.js";
 
 const container = new Container();
 
 container.bind<ContextInterface>(dependencies.Context).to(Context).inSingletonScope();
+container.bind<BrowserFactoryInterface>(dependencies.BrowserFactory).to(BrowserFactory);
 
 container.bind<ToolInterface>(dependencies.Tool).to(TakeScreenshot);
 container.bind<ToolInterface>(dependencies.Tool).to(OpenPage);
 container.bind<ToolInterface>(dependencies.Tool).to(Click);
+container.bind<ToolInterface>(dependencies.Tool).to(OpenBrowser);
 container.bind<ToolInterface>(dependencies.Tool).to(CloseBrowser);
 container.bind<ToolInterface>(dependencies.Tool).to(GetLocator);
 

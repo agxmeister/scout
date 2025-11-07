@@ -1,9 +1,10 @@
-import {injectable} from "inversify";
-import {chromium} from "playwright";
+import {inject, injectable} from "inversify";
+import {dependencies} from "../dependencies.js";
 import {uniqueNamesGenerator, adjectives, colors, animals} from "unique-names-generator";
 import {OpenWebPageSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
+import type {BrowserFactory as BrowserFactoryInterface} from "../modules/playwright/types.js";
 
 @injectable()
 export class OpenPage implements ToolInterface {
@@ -11,12 +12,14 @@ export class OpenPage implements ToolInterface {
     readonly description = "Open a web page in a browser";
     readonly schema = OpenWebPageSchema.shape;
 
+    constructor(
+        @inject(dependencies.BrowserFactory) private browserFactory: BrowserFactoryInterface
+    ) {}
+
     async handler({ url }: { url: string }, context: ContextInterface): Promise<CallToolResult> {
         try {
             if (!context.browser) {
-                const browser = await chromium.launch({
-                    headless: false,
-                });
+                const browser = await this.browserFactory.create();
                 context.setBrowser(browser);
             }
 
