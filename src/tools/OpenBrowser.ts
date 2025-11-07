@@ -1,11 +1,12 @@
-import {inject, injectable} from "inversify";
+import {inject} from "inversify";
 import {dependencies} from "../dependencies.js";
 import {OpenBrowserSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
 import type {BrowserFactory as BrowserFactoryInterface} from "../modules/playwright/types.js";
+import {tool} from "../decorators/tool.js";
 
-@injectable()
+@tool()
 export class OpenBrowser implements ToolInterface {
     readonly name = "open-browser";
     readonly description = "Open a browser instance";

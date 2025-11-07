@@ -1,9 +1,9 @@
-import {injectable} from "inversify";
 import {GetLocatorSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
+import {tool} from "../decorators/tool.js";
 
-@injectable()
+@tool()
 export class GetLocator implements ToolInterface {
     readonly name = "get-locator";
     readonly description = "Get XPath locator of an element at specified coordinates. Returns XPath using element's id or class attribute.";

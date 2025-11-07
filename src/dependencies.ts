@@ -3,4 +3,5 @@ export const dependencies = {
     Context: Symbol.for("Context"),
     McpServerFactory: Symbol.for("McpServerFactory"),
     BrowserFactory: Symbol.for("BrowserFactory"),
+    DiscoveryService: Symbol.for("DiscoveryService"),
 };

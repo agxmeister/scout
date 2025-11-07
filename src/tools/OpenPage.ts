@@ -1,12 +1,13 @@
-import {inject, injectable} from "inversify";
+import {inject} from "inversify";
 import {dependencies} from "../dependencies.js";
 import {uniqueNamesGenerator, adjectives, colors, animals} from "unique-names-generator";
 import {OpenWebPageSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
 import type {BrowserFactory as BrowserFactoryInterface} from "../modules/playwright/types.js";
+import {tool} from "../decorators/tool.js";
 
-@injectable()
+@tool()
 export class OpenPage implements ToolInterface {
     readonly name = "open-web-page";
     readonly description = "Open a web page in a browser";

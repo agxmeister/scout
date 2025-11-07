@@ -1,9 +1,9 @@
-import {injectable} from "inversify";
 import {ClickCoordinatesSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
+import {tool} from "../decorators/tool.js";
 
-@injectable()
+@tool()
 export class Click implements ToolInterface {
     readonly name = "click-coordinates";
     readonly description = "Click at specified coordinates on the current page";

@@ -1,9 +1,9 @@
-import {injectable} from "inversify";
 import {CloseBrowserSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
+import {tool} from "../decorators/tool.js";
 
-@injectable()
+@tool()
 export class CloseBrowser implements ToolInterface {
     readonly name = "close-browser";
     readonly description = "Close the browser and clean up resources";

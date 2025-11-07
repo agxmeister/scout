@@ -1,9 +1,9 @@
-import {injectable} from "inversify";
 import {ScreenshotSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
+import {tool} from "../decorators/tool.js";
 
-@injectable()
+@tool()
 export class TakeScreenshot implements ToolInterface {
     readonly name = "screenshot";
     readonly description = "Take a screenshot of the current page";
