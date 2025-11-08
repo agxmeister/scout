@@ -35,7 +35,6 @@ export class Context implements ContextInterface {
         }
         this.pages.delete(name);
 
-        // If we removed the current page, set currentPage to null
         if (this.currentPage === page) {
             this.currentPage = null;
         }

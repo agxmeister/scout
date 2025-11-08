@@ -1,7 +1,8 @@
 import {inject, injectable, multiInject} from "inversify";
 import {McpServer} from "@modelcontextprotocol/sdk/server/mcp.js";
 import {dependencies} from "../../dependencies.js";
-import type {Tool as ToolInterface, Context as ContextInterface, McpServerFactory as McpServerFactoryInterface} from "./types.js";
+import type {Tool as ToolInterface, McpServerFactory as McpServerFactoryInterface} from "./types.js";
+import type {Context as ContextInterface} from "../playwright/types.js";
 
 @injectable()
 export class McpServerFactory implements McpServerFactoryInterface {

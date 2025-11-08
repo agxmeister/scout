@@ -1,6 +1,7 @@
 import {ClickCoordinatesSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
-import type {Tool as ToolInterface, Context as ContextInterface} from "../modules/mcp/types.js";
+import type {Tool as ToolInterface} from "../modules/mcp/types.js";
+import type {Context as ContextInterface} from "../modules/playwright/types.js";
 import {tool} from "../decorators/tool.js";
 
 @tool()
