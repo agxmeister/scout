@@ -19,3 +19,7 @@ export const GetLocatorSchema = zod.object({
     x: zod.number().describe("X coordinate of the element"),
     y: zod.number().describe("Y coordinate of the element"),
 });
+
+export const SwitchPageSchema = zod.object({
+    name: zod.string().describe("Name of the page to switch to"),
+});
