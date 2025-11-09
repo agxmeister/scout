@@ -23,3 +23,5 @@ export const GetLocatorSchema = zod.object({
 export const SwitchPageSchema = zod.object({
     name: zod.string().describe("Name of the page to switch to"),
 });
+
+export const ListPagesSchema = zod.object({});
