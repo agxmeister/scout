@@ -1,0 +1,7 @@
+{
+    "tools": [
+        "OpenPage",
+        "Click",
+        "TakeScreenshot"
+    ]
+}
