@@ -14,3 +14,7 @@ export interface Context {
 export interface BrowserFactory {
     create(): Promise<Browser>;
 }
+
+export interface BrowserService {
+    getBrowser(): Promise<Browser>;
+}

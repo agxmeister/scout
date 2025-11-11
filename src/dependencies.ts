@@ -3,6 +3,7 @@ export const dependencies = {
     Context: Symbol.for("Context"),
     McpServerFactory: Symbol.for("McpServerFactory"),
     BrowserFactory: Symbol.for("BrowserFactory"),
+    BrowserService: Symbol.for("BrowserService"),
     DiscoveryService: Symbol.for("DiscoveryService"),
     ConfigFactory: Symbol.for("ConfigFactory"),
 };
