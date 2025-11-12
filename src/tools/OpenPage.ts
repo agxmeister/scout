@@ -4,7 +4,7 @@ import {uniqueNamesGenerator, adjectives, colors, animals} from "unique-names-ge
 import {OpenWebPageSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface} from "../modules/mcp/types.js";
-import type {BrowserService as BrowserServiceInterface, Context as ContextInterface} from "../modules/playwright/types.js";
+import type {PageService as PageServiceInterface, Context as ContextInterface} from "../modules/playwright/types.js";
 import {tool} from "../decorators/tool.js";
 
 @tool()
@@ -14,23 +14,18 @@ export class OpenPage implements ToolInterface {
     readonly schema = OpenWebPageSchema.shape;
 
     constructor(
-        @inject(dependencies.BrowserService) private browserService: BrowserServiceInterface
+        @inject(dependencies.PageService) private pageService: PageServiceInterface
     ) {}
 
-    async handler({ url }: { url: string }, context: ContextInterface): Promise<CallToolResult> {
+    async handler({ url }: { url: string }, _context: ContextInterface): Promise<CallToolResult> {
         try {
-            const browser = await this.browserService.getBrowser();
-
-            const browserContext = await browser.newContext();
-            const page = await browserContext.newPage();
-
             const pageName = uniqueNamesGenerator({
                 dictionaries: [adjectives, colors, animals],
                 separator: '-',
                 length: 3,
                 style: 'lowerCase'
             });
-            context.addPage(pageName, page);
+            const page = await this.pageService.getNewPage(pageName);
 
             await page.goto(url);
 

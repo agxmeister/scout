@@ -18,3 +18,12 @@ export interface BrowserFactory {
 export interface BrowserService {
     getBrowser(): Promise<Browser>;
 }
+
+export interface PageFactory {
+    create(): Promise<Page>;
+}
+
+export interface PageService {
+    getNewPage(name: string): Promise<Page>;
+    getCurrentPage(): Page | null;
+}
