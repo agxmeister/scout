@@ -25,3 +25,7 @@ export const SwitchPageSchema = zod.object({
 });
 
 export const ListPagesSchema = zod.object({});
+
+export const NavigatePageSchema = zod.object({
+    url: zod.string().describe("URL to navigate to"),
+});
