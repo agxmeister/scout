@@ -1,4 +1,4 @@
-import {ScreenshotSchema} from "../schemas.js";
+import * as zod from "zod";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface} from "../modules/mcp/types.js";
 import type {Context as ContextInterface} from "../modules/playwright/types.js";
@@ -8,7 +8,7 @@ import {tool} from "../decorators/tool.js";
 export class TakeScreenshot implements ToolInterface {
     readonly name = "screenshot";
     readonly description = "Take a screenshot of the current page";
-    readonly schema = ScreenshotSchema.shape;
+    readonly schema = zod.object({}).shape;
 
     async handler(_params: {}, context: ContextInterface): Promise<CallToolResult> {
         try {

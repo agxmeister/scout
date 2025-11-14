@@ -1,4 +1,4 @@
-import {SwitchPageSchema} from "../schemas.js";
+import * as zod from "zod";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface} from "../modules/mcp/types.js";
 import type {Context as ContextInterface} from "../modules/playwright/types.js";
@@ -8,7 +8,9 @@ import {tool} from "../decorators/tool.js";
 export class SwitchPage implements ToolInterface {
     readonly name = "switch-page";
     readonly description = "Switch to a different open page by name";
-    readonly schema = SwitchPageSchema.shape;
+    readonly schema = zod.object({
+        name: zod.string().describe("Name of the page to switch to"),
+    }).shape;
 
     async handler({ name }: { name: string }, context: ContextInterface): Promise<CallToolResult> {
         try {

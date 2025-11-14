@@ -1,4 +1,4 @@
-import {ListPagesSchema} from "../schemas.js";
+import * as zod from "zod";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface} from "../modules/mcp/types.js";
 import type {Context as ContextInterface} from "../modules/playwright/types.js";
@@ -8,7 +8,7 @@ import {tool} from "../decorators/tool.js";
 export class ListPages implements ToolInterface {
     readonly name = "list-pages";
     readonly description = "List all open pages with their names, titles, and URLs";
-    readonly schema = ListPagesSchema.shape;
+    readonly schema = zod.object({}).shape;
 
     async handler(_params: any, context: ContextInterface): Promise<CallToolResult> {
         try {

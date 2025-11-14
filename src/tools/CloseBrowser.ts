@@ -1,4 +1,4 @@
-import {CloseBrowserSchema} from "../schemas.js";
+import * as zod from "zod";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface} from "../modules/mcp/types.js";
 import type {Context as ContextInterface} from "../modules/playwright/types.js";
@@ -8,7 +8,7 @@ import {tool} from "../decorators/tool.js";
 export class CloseBrowser implements ToolInterface {
     readonly name = "close-browser";
     readonly description = "Close the browser and clean up resources";
-    readonly schema = CloseBrowserSchema.shape;
+    readonly schema = zod.object({}).shape;
 
     async handler(_params: any, context: ContextInterface): Promise<CallToolResult> {
         try {

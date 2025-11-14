@@ -1,6 +1,6 @@
 import {inject} from "inversify";
+import * as zod from "zod";
 import {dependencies} from "../dependencies.js";
-import {OpenBrowserSchema} from "../schemas.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface} from "../modules/mcp/types.js";
 import type {BrowserService as BrowserServiceInterface, Context as ContextInterface} from "../modules/playwright/types.js";
@@ -10,7 +10,7 @@ import {tool} from "../decorators/tool.js";
 export class OpenBrowser implements ToolInterface {
     readonly name = "open-browser";
     readonly description = "Open a browser instance";
-    readonly schema = OpenBrowserSchema.shape;
+    readonly schema = zod.object({}).shape;
 
     constructor(
         @inject(dependencies.BrowserService) private browserService: BrowserServiceInterface

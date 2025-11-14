@@ -1,4 +1,4 @@
-import {ClickCoordinatesSchema} from "../schemas.js";
+import * as zod from "zod";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface} from "../modules/mcp/types.js";
 import type {Context as ContextInterface} from "../modules/playwright/types.js";
@@ -8,7 +8,10 @@ import {tool} from "../decorators/tool.js";
 export class Click implements ToolInterface {
     readonly name = "click-coordinates";
     readonly description = "Click at specified coordinates on the current page";
-    readonly schema = ClickCoordinatesSchema.shape;
+    readonly schema = zod.object({
+        x: zod.number().describe("X coordinate to click"),
+        y: zod.number().describe("Y coordinate to click"),
+    }).shape;
 
     async handler({ x, y }: { x: number, y: number }, context: ContextInterface): Promise<CallToolResult> {
         try {
