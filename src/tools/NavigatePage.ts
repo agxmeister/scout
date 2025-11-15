@@ -1,7 +1,7 @@
 import {inject} from "inversify";
 import * as zod from "zod";
 import {dependencies} from "../dependencies.js";
-import {uniqueNamesGenerator, adjectives, colors, animals} from "unique-names-generator";
+import {generatePageName} from "../modules/playwright/utils.js";
 import type {CallToolResult} from "@modelcontextprotocol/sdk/types.js";
 import type {Tool as ToolInterface} from "../modules/mcp/types.js";
 import type {PageService as PageServiceInterface, Context as ContextInterface} from "../modules/playwright/types.js";
@@ -24,12 +24,7 @@ export class NavigatePage implements ToolInterface {
             let page = this.pageService.getCurrentPage();
 
             if (!page) {
-                const pageName = uniqueNamesGenerator({
-                    dictionaries: [adjectives, colors, animals],
-                    separator: '-',
-                    length: 3,
-                    style: 'lowerCase'
-                });
+                const pageName = generatePageName();
                 page = await this.pageService.getNewPage(pageName);
             }
 
