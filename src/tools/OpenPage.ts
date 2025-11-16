@@ -12,16 +12,17 @@ export class OpenPage implements ToolInterface {
     readonly name = "open-web-page";
     readonly description = "Open a web page in a browser";
     readonly schema = zod.object({
-        url: zod.string().describe("URL of the web page to open"),
+        url: zod.string().describe("Page URL"),
+        name: zod.string().optional().describe("Optional page name"),
     }).shape;
 
     constructor(
         @inject(dependencies.PageService) private pageService: PageServiceInterface
     ) {}
 
-    async handler({ url }: { url: string }, _context: ContextInterface): Promise<CallToolResult> {
+    async handler({ url, name }: { url: string, name?: string }, _context: ContextInterface): Promise<CallToolResult> {
         try {
-            const pageName = generatePageName();
+            const pageName = name ?? generatePageName();
             const page = await this.pageService.getNewPage(pageName);
 
             await page.goto(url);

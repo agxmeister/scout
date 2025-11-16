@@ -13,18 +13,19 @@ export class NavigatePage implements ToolInterface {
     readonly description = "Navigate the current page to a different URL, or open a new page if none exists";
     readonly schema = zod.object({
         url: zod.string().describe("URL to navigate to"),
+        name: zod.string().optional().describe("Optional page name if opening a new one"),
     }).shape;
 
     constructor(
         @inject(dependencies.PageService) private pageService: PageServiceInterface
     ) {}
 
-    async handler({ url }: { url: string }, _context: ContextInterface): Promise<CallToolResult> {
+    async handler({ url, name }: { url: string, name?: string }, _context: ContextInterface): Promise<CallToolResult> {
         try {
             let page = this.pageService.getCurrentPage();
 
             if (!page) {
-                const pageName = generatePageName();
+                const pageName = name ?? generatePageName();
                 page = await this.pageService.getNewPage(pageName);
             }
 
